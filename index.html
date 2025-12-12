@@ -36,13 +36,11 @@
             display: none !important;
         }
         
-        /* Анимации */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        /* Экраны авторизации */
         .auth-container {
             background: white;
             border-radius: 25px;
@@ -146,7 +144,6 @@
             text-align: left;
         }
         
-        /* Основной контейнер */
         .app-container {
             width: 100%;
             max-width: 1200px;
@@ -160,7 +157,6 @@
             animation: fadeIn 0.5s ease-out;
         }
         
-        /* Боковая панель с чатами */
         .sidebar {
             width: 350px;
             background: var(--floppa-dark);
@@ -202,7 +198,7 @@
             border: 3px solid white;
             background-size: cover;
             background-position: center;
-            background-color: var(--floppa-orange); /* Фолбэк цвет */
+            background-color: var(--floppa-orange);
         }
         
         .user-details h3 {
@@ -325,7 +321,6 @@
             transform: scale(1.05);
         }
         
-        /* Основная область чата */
         .chat-area {
             flex: 1;
             display: flex;
@@ -521,7 +516,6 @@
             box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
         }
         
-        /* Модальные окна */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -603,7 +597,6 @@
             color: var(--floppa-orange);
         }
         
-        /* Модалка смены аватара */
         .avatar-options {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -641,7 +634,6 @@
             border: 5px solid var(--floppa-orange);
         }
         
-        /* Кнопка выхода */
         .logout-btn {
             background: rgba(255, 107, 53, 0.2);
             color: white;
@@ -663,7 +655,6 @@
             transform: scale(1.05);
         }
         
-        /* Адаптивность */
         @media (max-width: 768px) {
             .app-container {
                 flex-direction: column;
@@ -852,9 +843,7 @@
             
             <div class="avatar-preview" id="avatarPreview"></div>
             
-            <div class="avatar-options" id="avatarOptions">
-                <!-- Аватары будут сгенерированы скриптом -->
-            </div>
+            <div class="avatar-options" id="avatarOptions"></div>
             
             <div style="text-align: center; margin-top: 20px;">
                 <button class="auth-button" id="saveAvatarBtn">
@@ -864,14 +853,13 @@
         </div>
     </div>
 
-    <!-- Firebase SDK (убрали storage) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     
     <script>
         // ==================== КОНФИГУРАЦИЯ FIREBASE ====================
-        // ЗАМЕНИТЕ ЭТИ ДАННЫЕ НА ВАШИ!
         const firebaseConfig = {
           apiKey: "AIzaSyCUXruRdIXia0Vx1z_EHY_k-m1hfmL1nVU",
           authDomain: "floppa-chat-77972.firebaseapp.com",
@@ -881,8 +869,6 @@
           appId: "1:638041274882:web:dbf024d6546e15163bc51b"
         };
 
-        
-        // Инициализация Firebase (без storage)
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -906,11 +892,9 @@
                 '#FF5722', '#795548', '#607D8B', '#8BC34A'
             ];
             
-            // Безопасное получение цвета
             const safeIndex = Math.abs(avatarIndex) % colors.length;
             const color = colors[safeIndex];
             
-            // Получаем инициалы (максимум 2 буквы)
             let initials = '??';
             if (name && typeof name === 'string') {
                 initials = name
@@ -921,68 +905,47 @@
                     .substring(0, 2);
             }
             
-            // Создаем разные формы аватаров
             const shapes = [
-                // Круг
                 `<circle cx="50" cy="50" r="45" fill="${color}"/>
                  <text x="50" y="58" text-anchor="middle" fill="white" font-size="36" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Квадрат со скругленными углами
                 `<rect x="5" y="5" width="90" height="90" rx="20" fill="${color}"/>
                  <text x="50" y="58" text-anchor="middle" fill="white" font-size="36" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Ромб
                 `<path d="M50,5 L95,50 L50,95 L5,50 Z" fill="${color}"/>
                  <text x="50" y="58" text-anchor="middle" fill="white" font-size="36" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Треугольник
                 `<polygon points="50,10 90,85 10,85" fill="${color}"/>
                  <text x="50" y="70" text-anchor="middle" fill="white" font-size="32" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Шестиугольник
                 `<path d="M25,15 L75,15 L92,50 L75,85 L25,85 L8,50 Z" fill="${color}"/>
                  <text x="50" y="58" text-anchor="middle" fill="white" font-size="36" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Звезда
                 `<path d="M50,5 L61,40 L97,40 L68,60 L79,95 L50,75 L21,95 L32,60 L3,40 L39,40 Z" fill="${color}"/>
                  <text x="50" y="60" text-anchor="middle" fill="white" font-size="30" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Сердце
                 `<path d="M50,30 C60,15 80,15 90,30 C100,45 85,65 70,80 C60,90 50,95 50,95 C50,95 40,90 30,80 C15,65 0,45 10,30 C20,15 40,15 50,30 Z" fill="${color}"/>
                  <text x="50" y="65" text-anchor="middle" fill="white" font-size="28" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`,
                 
-                // Облако
                 `<path d="M20,50 Q10,40 20,30 Q30,20 40,25 Q50,10 65,15 Q80,20 80,35 Q90,40 85,55 Q80,70 65,75 Q50,80 40,75 Q30,70 25,65 Q20,60 20,50 Z" fill="${color}"/>
                  <text x="50" y="58" text-anchor="middle" fill="white" font-size="30" font-family="Arial, sans-serif" font-weight="bold">${initials}</text>`
             ];
             
-            // Выбираем форму на основе avatarIndex
             const shapeIndex = Math.abs(avatarIndex) % shapes.length;
             const svgShape = shapes[shapeIndex];
             
-            // Создаем SVG
             const svg = `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                     ${svgShape}
                 </svg>
             `;
             
-            // Конвертируем в Data URL
             return 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
         }
         
         // ==================== УТИЛИТЫ ====================
         function generateChatId(userId1, userId2) {
             return [userId1, userId2].sort().join('_');
-        }
-        
-        function getInitials(name) {
-            if (!name || typeof name !== 'string') return '??';
-            return name.split(' ')
-                .map(n => n[0])
-                .join('')
-                .toUpperCase()
-                .substring(0, 2);
         }
         
         function formatTime(timestamp) {
@@ -1010,6 +973,18 @@
             }
         }
         
+        function getAuthErrorMessage(errorCode) {
+            const messages = {
+                'auth/email-already-in-use': 'Этот email уже используется',
+                'auth/invalid-email': 'Неверный формат email',
+                'auth/weak-password': 'Пароль слишком простой (минимум 6 символов)',
+                'auth/user-not-found': 'Пользователь не найден',
+                'auth/wrong-password': 'Неверный пароль',
+                'auth/too-many-requests': 'Слишком много попыток. Попробуйте позже'
+            };
+            return messages[errorCode] || 'Произошла ошибка. Попробуйте еще раз';
+        }
+        
         // ==================== АУТЕНТИФИКАЦИЯ ====================
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -1019,19 +994,17 @@
             const password = document.getElementById('registerPassword').value;
             
             try {
-                // 1. Создаём пользователя в Authentication
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 
-                // 2. Обновляем displayName
                 await userCredential.user.updateProfile({ 
                     displayName: name || 'Пользователь' 
                 });
-                                // 3. Создаём запись в Firestore со случайным аватаром
+
                 const userData = {
                     uid: userCredential.user.uid,
                     displayName: name || 'Пользователь',
                     email: email,
-                    avatarIndex: Math.floor(Math.random() * 8), // Случайный аватар
+                    avatarIndex: Math.floor(Math.random() * 8),
                     online: true,
                     lastSeen: firebase.firestore.FieldValue.serverTimestamp(),
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -1060,11 +1033,9 @@
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
                 currentUser = userCredential.user;
                 
-                // Проверяем/создаём запись в Firestore
                 const userDoc = await db.collection('users').doc(currentUser.uid).get();
                 
                 if (!userDoc.exists) {
-                    // Создаём запись если её нет
                     await db.collection('users').doc(currentUser.uid).set({
                         uid: currentUser.uid,
                         displayName: currentUser.displayName || 'Пользователь',
@@ -1075,7 +1046,6 @@
                         createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } else {
-                    // Обновляем статус онлайн
                     await db.collection('users').doc(currentUser.uid).update({
                         online: true,
                         lastSeen: firebase.firestore.FieldValue.serverTimestamp()
@@ -1091,19 +1061,6 @@
             }
         });
         
-        function getAuthErrorMessage(errorCode) {
-            const messages = {
-                'auth/email-already-in-use': 'Этот email уже используется',
-                'auth/invalid-email': 'Неверный формат email',
-                'auth/weak-password': 'Пароль слишком простой (минимум 6 символов)',
-                'auth/user-not-found': 'Пользователь не найден',
-                'auth/wrong-password': 'Неверный пароль',
-                'auth/too-many-requests': 'Слишком много попыток. Попробуйте позже'
-            };
-            return messages[errorCode] || 'Произошла ошибка. Попробуйте еще раз';
-        }
-        
-        // Переключение экранов
         document.getElementById('showLogin').addEventListener('click', () => {
             document.getElementById('registerScreen').classList.add('hidden');
             document.getElementById('loginScreen').classList.remove('hidden');
@@ -1122,11 +1079,8 @@
             
             updateUserInfo();
             loadChats();
-            loadUsersForNewChat();
-            updateOnlineStatus(true);
-            
-            // Загрузка удалённых сообщений из localStorage
             loadDeletedMessages();
+            updateOnlineStatus(true);
             
             console.log('✅ Интерфейс загружен');
         }
@@ -1138,7 +1092,6 @@
             document.getElementById('userDisplayName').textContent = displayName;
             document.getElementById('userEmail').textContent = currentUser.email;
             
-            // Загружаем аватар пользователя
             loadUserAvatar(currentUser.uid, 'userAvatar');
         }
         
@@ -1160,10 +1113,7 @@
                     displayName = currentUser.displayName;
                 }
                 
-                // Генерируем SVG аватар
                 const svgDataUrl = generateSVGAvatar(displayName, avatarIndex);
-                
-                // Устанавливаем как background-image
                 avatarElement.style.backgroundImage = `url('${svgDataUrl}')`;
                 avatarElement.style.backgroundSize = 'cover';
                 avatarElement.style.backgroundPosition = 'center';
@@ -1171,7 +1121,6 @@
                 
             } catch (error) {
                 console.error('Ошибка загрузки аватара:', error);
-                // Дефолтный аватар при ошибке
                 const avatarElement = document.getElementById(elementId);
                 if (avatarElement) {
                     const defaultAvatar = generateSVGAvatar('Ошибка', 0);
@@ -1198,7 +1147,9 @@
         function loadChats() {
             if (!currentUser) return;
             
-            if (chatsListener) chatsListener();
+            if (chatsListener) {
+                chatsListener();
+            }
             
             chatsListener = db.collection('chats')
                 .where('participants', 'array-contains', currentUser.uid)
@@ -1256,7 +1207,6 @@
                 <div class="chat-time">${lastTime}</div>
             `;
             
-            // Загружаем аватар партнёра
             loadUserAvatar(partnerId, `chatAvatar_${chatId}`);
             
             chatItem.addEventListener('click', () => {
@@ -1270,7 +1220,6 @@
             currentChatId = chatId;
             currentPartner = partner;
             
-            // Обновляем активный элемент
             document.querySelectorAll('.chat-item').forEach(item => {
                 item.classList.remove('active');
             });
@@ -1280,22 +1229,18 @@
                 activeChat.classList.add('active');
             }
             
-            // Обновляем заголовок
             document.getElementById('chatPartnerName').textContent = partner.displayName;
             loadUserAvatar(partnerId, 'chatPartnerAvatar');
             
-            // Обновляем статус
             document.getElementById('chatStatus').innerHTML = `
                 <i class="fas fa-circle"></i> 
                 <span>В сети</span>
             `;
             
-            // Активируем поле ввода
             document.getElementById('messageInput').disabled = false;
             document.getElementById('sendButton').disabled = false;
             document.getElementById('messageInput').focus();
             
-            // Загружаем сообщения
             loadMessages(chatId);
             
             console.log(`✅ Выбран чат: ${partner.displayName}`);
@@ -1337,7 +1282,6 @@
                         <div class="no-chats-message">
                             <i class="fas fa-exclamation-triangle"></i>
                             <p>Ошибка загрузки сообщений</p>
-                            <p style="font-size: 0.8rem; margin-top: 10px;">${error.message}</p>
                         </div>
                     `;
                 });
@@ -1387,7 +1331,6 @@
             
             messages.forEach(message => addMessageToChat(message));
             
-            // Прокручиваем вниз
             setTimeout(() => {
                 container.scrollTop = container.scrollHeight;
             }, 100);
@@ -1396,7 +1339,6 @@
         function addMessageToChat(message) {
             const container = document.getElementById('chatMessages');
             
-            // Убираем сообщение "Нет сообщений"
             if (container.querySelector('.no-chats-message')) {
                 container.innerHTML = '';
             }
@@ -1436,10 +1378,8 @@
             
             container.appendChild(messageDiv);
             
-            // Прокручиваем к новому сообщению
             container.scrollTop = container.scrollHeight;
             
-            // Добавляем обработчик удаления
             if (isMyMessage && !isDeleted) {
                 const deleteBtn = messageDiv.querySelector('.delete-message-btn');
                 if (deleteBtn) {
@@ -1456,11 +1396,9 @@
         function deleteMessage(messageId) {
             if (!confirm('Удалить это сообщение для себя?')) return;
             
-            // Добавляем в список удалённых
             deletedMessageIds.add(messageId);
             saveDeletedMessages();
             
-            // Помечаем сообщение как удалённое в интерфейсе
             const messageElement = document.querySelector(`[data-message-id="${messageId}"]`);
             if (messageElement) {
                 messageElement.classList.add('deleted');
@@ -1469,7 +1407,6 @@
                     textElement.textContent = '✖️ Сообщение удалено';
                 }
                 
-                // Убираем кнопку удаления
                 const actionsElement = messageElement.querySelector('.message-actions');
                 if (actionsElement) {
                     actionsElement.remove();
@@ -1513,7 +1450,6 @@
             
             if (!text || !currentUser || !currentChatId) return;
             
-            // Временно показываем сообщение локально
             const tempMessage = {
                 text: text,
                 senderId: currentUser.uid,
@@ -1533,10 +1469,8 @@
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 };
                 
-                // Добавляем сообщение в Firestore
                 await db.collection('chats').doc(currentChatId).collection('messages').add(message);
                 
-                // Обновляем информацию о чате
                 const shortText = text.length > 30 ? text.substring(0, 27) + '...' : text;
                 await db.collection('chats').doc(currentChatId).update({
                     lastMessage: shortText,
@@ -1553,22 +1487,35 @@
         
         // ==================== СОЗДАНИЕ НОВОГО ЧАТА ====================
         document.getElementById('newChatBtn').addEventListener('click', () => {
-            document.getElementById('newChatModal').classList.remove('hidden');
+            showNewChatModal();
         });
         
         document.getElementById('closeNewChatModal').addEventListener('click', () => {
             document.getElementById('newChatModal').classList.add('hidden');
+            if (usersListener) {
+                usersListener();
+                usersListener = null;
+            }
         });
+        
+        function showNewChatModal() {
+            document.getElementById('newChatModal').classList.remove('hidden');
+            loadUsersForNewChat();
+        }
         
         function loadUsersForNewChat() {
             if (!currentUser) return;
             
-            if (usersListener) usersListener();
+            if (usersListener) {
+                usersListener();
+            }
+            
+            const usersList = document.getElementById('usersList');
+            usersList.innerHTML = '<div class="no-chats-message"><i class="fas fa-spinner fa-spin"></i><p>Загрузка пользователей...</p></div>';
             
             usersListener = db.collection('users')
                 .where('uid', '!=', currentUser.uid)
                 .onSnapshot((snapshot) => {
-                    const usersList = document.getElementById('usersList');
                     usersList.innerHTML = '';
                     
                     if (snapshot.empty) {
@@ -1584,6 +1531,7 @@
                     console.log(`👥 Пользователей для чата: ${snapshot.size}`);
                 }, (error) => {
                     console.error("Ошибка загрузки пользователей:", error);
+                    usersList.innerHTML = '<div class="no-chats-message"><p>Ошибка загрузки пользователей</p></div>';
                 });
         }
         
@@ -1605,7 +1553,6 @@
                 </div>
             `;
             
-            // Загружаем аватар
             loadUserAvatar(user.uid, `selectAvatar_${user.uid}`);
             
             userItem.addEventListener('click', async () => {
@@ -1626,10 +1573,8 @@
             document.getElementById('newChatModal').classList.add('hidden');
             
             try {
-                // Генерируем ID чата
                 const chatId = generateChatId(currentUser.uid, partner.uid);
                 
-                // Получаем данные пользователей
                 const [myUserDoc, partnerUserDoc] = await Promise.all([
                     db.collection('users').doc(currentUser.uid).get(),
                     db.collection('users').doc(partner.uid).get()
@@ -1645,15 +1590,12 @@
                     avatarIndex: 0
                 };
                 
-                // Проверяем существование чата
                 const chatDoc = await db.collection('chats').doc(chatId).get();
                 
                 if (chatDoc.exists) {
-                    // Чат уже существует
                     console.log(`✅ Чат уже существует`);
                     selectChat(chatId, partner.uid, partnerData);
                 } else {
-                    // Создаём новый чат
                     const chatData = {
                         id: chatId,
                         participants: [currentUser.uid, partner.uid],
@@ -1675,7 +1617,6 @@
                     await db.collection('chats').doc(chatId).set(chatData);
                     console.log(`✅ Новый чат создан: ${chatId}`);
                     
-                    // Добавляем приветственное сообщение
                     await db.collection('chats').doc(chatId).collection('messages').add({
                         text: 'Чат создан! Начните общение.',
                         senderId: 'system',
@@ -1683,11 +1624,19 @@
                         timestamp: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     
+                    // КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ: Добавляем чат в список
+                    addChatToList(chatId, chatData);
+                    
                     // Выбираем созданный чат
                     selectChat(chatId, partner.uid, partnerData);
                     
-                    // Обновляем список чатов
-                    setTimeout(() => loadChats(), 1000);
+                    console.log('✅ Чат добавлен в список и выбран');
+                }
+                
+                // Отписываемся от слушателя пользователей
+                if (usersListener) {
+                    usersListener();
+                    usersListener = null;
                 }
                 
             } catch (error) {
@@ -1708,7 +1657,6 @@
         async function showAvatarModal() {
             selectedAvatarIndex = null;
             
-            // Загружаем текущий аватар пользователя
             const userDoc = await db.collection('users').doc(currentUser.uid).get();
             let currentAvatarIndex = 0;
             
@@ -1717,24 +1665,20 @@
                 currentAvatarIndex = userData.avatarIndex || 0;
             }
             
-            // Обновляем превью
             const avatarPreview = document.getElementById('avatarPreview');
             const previewAvatar = generateSVGAvatar(currentUser.displayName || 'Пользователь', currentAvatarIndex);
             avatarPreview.style.backgroundImage = `url('${previewAvatar}')`;
             avatarPreview.style.backgroundSize = 'cover';
             avatarPreview.style.backgroundPosition = 'center';
             
-            // Генерируем варианты аватаров
             const avatarOptions = document.getElementById('avatarOptions');
             avatarOptions.innerHTML = '';
             
-            // 12 вариантов SVG аватаров
             for (let i = 0; i < 12; i++) {
                 const avatarOption = document.createElement('div');
                 avatarOption.className = `avatar-option ${currentAvatarIndex === i ? 'selected' : ''}`;
                 avatarOption.dataset.index = i;
                 
-                // Генерируем SVG для этого варианта
                 const svgDataUrl = generateSVGAvatar(currentUser.displayName || 'Пользователь', i);
                 avatarOption.style.backgroundImage = `url('${svgDataUrl}')`;
                 avatarOption.style.backgroundSize = 'cover';
@@ -1747,7 +1691,6 @@
                 avatarOptions.appendChild(avatarOption);
             }
             
-            // Показываем модальное окно
             document.getElementById('avatarModal').classList.remove('hidden');
             console.log('🖼️ Открыт выбор аватара');
         }
@@ -1755,7 +1698,6 @@
         function selectAvatar(index) {
             selectedAvatarIndex = index;
             
-            // Обновляем выделение
             document.querySelectorAll('.avatar-option').forEach(option => {
                 option.classList.remove('selected');
             });
@@ -1765,7 +1707,6 @@
                 selectedOption.classList.add('selected');
             }
             
-            // Обновляем превью
             const avatarPreview = document.getElementById('avatarPreview');
             const previewAvatar = generateSVGAvatar(currentUser.displayName || 'Пользователь', index);
             avatarPreview.style.backgroundImage = `url('${previewAvatar}')`;
@@ -1781,15 +1722,12 @@
             }
             
             try {
-                // Обновляем в Firestore
                 await db.collection('users').doc(currentUser.uid).update({
                     avatarIndex: selectedAvatarIndex
                 });
                 
-                // Обновляем аватар в интерфейсе
                 loadUserAvatar(currentUser.uid, 'userAvatar');
                 
-                // Закрываем модальное окно
                 document.getElementById('avatarModal').classList.add('hidden');
                 
                 alert('✅ Аватар успешно обновлён!');
@@ -1829,21 +1767,17 @@
                     });
                 }
                 
-                // Отключаем слушатели
                 if (chatListener) chatListener();
                 if (chatsListener) chatsListener();
                 if (usersListener) usersListener();
                 
-                // Выходим
                 await auth.signOut();
                 
-                // Сбрасываем состояние
                 currentUser = null;
                 currentChatId = null;
                 loadedMessageIds.clear();
                 deletedMessageIds.clear();
                 
-                // Показываем экран входа
                 document.getElementById('appContainer').classList.add('hidden');
                 document.getElementById('registerScreen').classList.remove('hidden');
                 
@@ -1870,7 +1804,6 @@
             if (usersListener) usersListener();
         });
         
-        // Автозаполнение для демо
         window.addEventListener('load', () => {
             console.log('🚀 Приложение загружено');
             
@@ -1885,7 +1818,6 @@
             }, 500);
         });
         
-        // Глобальная функция для отладки
         window.debugApp = function() {
             console.log('=== ДЕБАГ ИНФОРМАЦИЯ ===');
             console.log('Текущий пользователь:', currentUser?.email);
@@ -1899,4 +1831,3 @@
     </script>
 </body>
 </html>
-
